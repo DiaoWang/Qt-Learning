@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QListWidgetDemo</class>
+ <widget class="QWidget" name="QListWidgetDemo">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QListWidgetDemo</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QListWidget" name="lstwgt_Province">
+     <item>
+      <property name="text">
+       <string>示例项目1</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <selectedoff>:/icon/qt_256.ico</selectedoff>
+        <selectedon>:/icon/qt_256.ico</selectedon>
+       </iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>示例项目2</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <selectedoff>:/icon/qt_256.ico</selectedoff>
+        <selectedon>:/icon/qt_256.ico</selectedon>
+       </iconset>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QRadioButton" name="rbtn_ListMode">
+       <property name="text">
+        <string>列表模式</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="rbtn_IconMode">
+       <property name="text">
+        <string>图标模式</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>当前选中条目：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="le_CurrentItem"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="le_Input"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="pbtn_Add">
+       <property name="text">
+        <string>添加</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pbtn_Insert">
+       <property name="text">
+        <string>插入</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pbtn_Delete">
+       <property name="text">
+        <string>删除</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/start_4acf5a.png</file>
+        <file>img/stop_ff3040.png</file>
+        <file>icon/qt_128.ico</file>
+        <file>icon/qt_256.ico</file>
+        <file>img/focus.png</file>
+        <file>img/power.png</file>
+        <file>img/signal.png</file>
+    </qresource>
+</RCC>

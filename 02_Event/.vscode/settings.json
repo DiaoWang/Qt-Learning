@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "qtextcodec": "cpp",
+        "qpushbutton": "cpp",
+        "qapplication": "cpp",
+        "new": "cpp"
+    },
+    "terminal.integrated.env.windows": {
+        "HTTP_PROXY": "127.0.0.1:7890"
+    },
+    "terminal.integrated.env.linux": {
+        "HTTP_PROXY": "127.0.0.1:7890"
+    },
+    "terminal.integrated.env.osx": {
+        "HTTP_PROXY": "127.0.0.1:7890"
+    }
+}

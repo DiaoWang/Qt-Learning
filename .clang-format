@@ -1,0 +1,35 @@
+# https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+---
+BasedOnStyle: Microsoft
+Language: Cpp
+# 每行字符数限制
+ColumnLimit: 80
+# 缩进数量
+IndentWidth: 2
+# 换行后下一行需要的缩进数量
+ContinuationIndentWidth: 2
+# 访问修饰符偏移量(public、protected、private，建议匹配缩进数量)
+AccessModifierOffset: -2
+
+# 命名空间内的内容需要缩进
+NamespaceIndentation: All
+# 自动为命名空间结尾处添加注释
+FixNamespaceComments: true
+
+# * & 操作符紧挨类型名
+PointerAlignment: Left
+# 是否排序头文件
+SortIncludes: true
+
+# 指定构造函数初始化器每个成员独占一行
+PackConstructorInitializers: Never
+# 构造函数初始化器逗号冒号格式
+BreakConstructorInitializers: BeforeColon
+# 构造函数初始化列表要么都在一行，要么每个变量一行
+# ConstructorInitializerAllOnOneLineOrOnePerLine: true
+
+
+# switch 里的 case 需要缩进
+# IndentCaseLabels: true
+# 允许对注释重新排版
+# ReflowComments: true

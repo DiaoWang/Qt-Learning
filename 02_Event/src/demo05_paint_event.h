@@ -1,9 +1,9 @@
 #ifndef DEMO05_PAINT_EVENT_H
 #define DEMO05_PAINT_EVENT_H
 
-#include "demobase.h"
+#include <QWidget>
 
-class PaintEventDemo : public DemoBase
+class PaintEventDemo : public QWidget
 {
   Q_OBJECT
 public:

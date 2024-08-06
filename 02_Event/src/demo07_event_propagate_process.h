@@ -1,9 +1,9 @@
 #ifndef DEMO07_EVENT_PROPAGATE_PROCESS_H
 #define DEMO07_EVENT_PROPAGATE_PROCESS_H
 
-#include "demobase.h"
+#include <QWidget>
 
-class EventPropagateProcessDemo : public DemoBase
+class EventPropagateProcessDemo : public QWidget
 {
   Q_OBJECT
 public:

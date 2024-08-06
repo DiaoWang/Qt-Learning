@@ -6,7 +6,6 @@ debug/demo04_drag_event.o
 debug/demo05_paint_event.o
 debug/demo06_context_menu_event.o
 debug/demo07_event_propagate_process.o
-debug/demobase.o
 debug/main.o
 debug/moc_demo00_event.o
 debug/moc_demo01_mouse_event.o
@@ -16,4 +15,3 @@ debug/moc_demo04_drag_event.o
 debug/moc_demo05_paint_event.o
 debug/moc_demo06_context_menu_event.o
 debug/moc_demo07_event_propagate_process.o
-debug/moc_demobase.o

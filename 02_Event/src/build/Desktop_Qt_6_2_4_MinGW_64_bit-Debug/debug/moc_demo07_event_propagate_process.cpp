@@ -8,7 +8,6 @@
 
 #include <memory>
 #include "../../../demo07_event_propagate_process.h"
-#include <QtGui/qtextcursor.h>
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
@@ -62,7 +61,7 @@ void EventPropagateProcessDemo::qt_static_metacall(QObject *_o, QMetaObject::Cal
 }
 
 const QMetaObject EventPropagateProcessDemo::staticMetaObject = { {
-    QMetaObject::SuperData::link<DemoBase::staticMetaObject>(),
+    QMetaObject::SuperData::link<QWidget::staticMetaObject>(),
     qt_meta_stringdata_EventPropagateProcessDemo.offsetsAndSize,
     qt_meta_data_EventPropagateProcessDemo,
     qt_static_metacall,
@@ -87,12 +86,12 @@ void *EventPropagateProcessDemo::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_EventPropagateProcessDemo.stringdata0))
         return static_cast<void*>(this);
-    return DemoBase::qt_metacast(_clname);
+    return QWidget::qt_metacast(_clname);
 }
 
 int EventPropagateProcessDemo::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = DemoBase::qt_metacall(_c, _id, _a);
+    _id = QWidget::qt_metacall(_c, _id, _a);
     return _id;
 }
 QT_WARNING_POP

@@ -62,7 +62,7 @@ void MouseEventDemo::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
 }
 
 const QMetaObject MouseEventDemo::staticMetaObject = { {
-    QMetaObject::SuperData::link<DemoBase::staticMetaObject>(),
+    QMetaObject::SuperData::link<QWidget::staticMetaObject>(),
     qt_meta_stringdata_MouseEventDemo.offsetsAndSize,
     qt_meta_data_MouseEventDemo,
     qt_static_metacall,
@@ -87,12 +87,12 @@ void *MouseEventDemo::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_MouseEventDemo.stringdata0))
         return static_cast<void*>(this);
-    return DemoBase::qt_metacast(_clname);
+    return QWidget::qt_metacast(_clname);
 }
 
 int MouseEventDemo::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = DemoBase::qt_metacall(_c, _id, _a);
+    _id = QWidget::qt_metacall(_c, _id, _a);
     return _id;
 }
 struct qt_meta_stringdata_MouseEventLabel_t {

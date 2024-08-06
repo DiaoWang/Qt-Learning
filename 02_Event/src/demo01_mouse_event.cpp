@@ -3,29 +3,28 @@
 #include <QDebug>
 #include <QPoint>
 #include <QString>
+#include <QVBoxLayout>
 
 MouseEventDemo::MouseEventDemo(QWidget* parent)
-    : DemoBase(parent),
+    : QWidget(parent),
       m_eventFilterCount(0),
+      m_lbMouseEvent(new MouseEventLabel(this)),
       m_lbEventFilter(new QLabel(this)),
       m_wgt(new QWidget(this)),
       m_lbCube(new QLabel(m_wgt))
 {
-  auto const labelHeight = m_label->height();
+  QVBoxLayout* vLayout = new QVBoxLayout(this);
+  vLayout->setSpacing(0);
+  vLayout->setContentsMargins(0, 0, 0, 0);
 
-  // 移除默认创建的 QLabel
-  m_vLayout->removeWidget(m_label);
-  delete m_label;
+  m_lbMouseEvent->setFrameShape(QFrame::NoFrame);
+  m_lbMouseEvent->setAlignment(Qt::AlignCenter);
+  m_lbMouseEvent->setFixedHeight(50);
+  m_lbMouseEvent->setStyleSheet("background-color: rgba(255, 220, 220, 200);");
 
-  m_label = new MouseEventLabel(this);
-  m_label->setFrameShape(QFrame::NoFrame);
-  m_label->setAlignment(Qt::AlignCenter);
-  m_label->setFixedHeight(labelHeight);
-  m_label->setStyleSheet("background-color: rgba(255, 220, 220, 200);");
-
-  m_lbEventFilter->setFrameStyle(m_label->frameStyle());
-  m_lbEventFilter->setAlignment(m_label->alignment());
-  m_lbEventFilter->setFixedHeight(m_label->height());
+  m_lbEventFilter->setFrameStyle(m_lbMouseEvent->frameStyle());
+  m_lbEventFilter->setAlignment(m_lbMouseEvent->alignment());
+  m_lbEventFilter->setFixedHeight(m_lbMouseEvent->height());
   m_lbEventFilter->setStyleSheet("background-color: rgba(200, 220, 255, 200);");
 
   m_lbCube->setFrameShape(QFrame::NoFrame);
@@ -35,25 +34,27 @@ MouseEventDemo::MouseEventDemo(QWidget* parent)
   m_lbCube->setStyleSheet("background-color: rgb(255, 150, 150);");
   m_lbCube->setText("左键拖动\n右键复位");
 
-  m_vLayout->addWidget(m_label);
-  m_vLayout->addWidget(m_lbEventFilter);
-  m_vLayout->addWidget(m_wgt);
+  vLayout->addWidget(m_lbMouseEvent);
+  vLayout->addWidget(m_lbEventFilter);
+  vLayout->addWidget(m_wgt);
 
   // 安装事件过滤器，m_lbEventFilter 的所有事件受到 this 监控
   m_lbEventFilter->installEventFilter(this);
   m_lbCube->installEventFilter(this);
   m_wgt->installEventFilter(this);
+
+  setLayout(vLayout);
 }
 
 MouseEventDemo::~MouseEventDemo()
 {
 }
 
-void MouseEventDemo::moveToCenter(const QWidget& parent, QWidget& children)
+void MouseEventDemo::MoveToCenter(const QWidget& parent, QWidget& children)
 {
-  int pos_x = parent.size().width() / 2 - children.size().width() / 2;
-  int pos_y = parent.size().height() / 2 - children.size().height() / 2;
-  children.move(pos_x, pos_y);
+  int posX = parent.size().width() / 2 - children.size().width() / 2;
+  int posY = parent.size().height() / 2 - children.size().height() / 2;
+  children.move(posX, posY);
 }
 
 bool MouseEventDemo::eventFilter(QObject* watched, QEvent* event)
@@ -86,7 +87,7 @@ bool MouseEventDemo::eventFilter(QObject* watched, QEvent* event)
       }
       else if (mouseEvent->button() == Qt::RightButton)
       {
-        moveToCenter(*m_wgt, *m_lbCube);
+        MoveToCenter(*m_wgt, *m_lbCube);
       }
     }
     else if (event->type() == QEvent::MouseMove)
@@ -102,23 +103,25 @@ bool MouseEventDemo::eventFilter(QObject* watched, QEvent* event)
       auto dstPosCube = curPosMouse - m_lastPosMouse + m_lastPosCube;
 
       // 限制移动范围在窗体内部
-      int max_x = m_wgt->width() - m_lbCube->width(); // 计算x坐标最大值
-      int max_y = m_wgt->height() - m_lbCube->height(); // 计算y坐标最大值
+      int maxX = m_wgt->width() - m_lbCube->width(); // 计算x坐标最大值
+      int maxY = m_wgt->height() - m_lbCube->height(); // 计算y坐标最大值
+      // 限制 x 不超出边缘
       if (dstPosCube.x() < 0)
       {
         dstPosCube.setX(0);
       }
-      else if (dstPosCube.x() > max_x)
+      else if (dstPosCube.x() > maxX)
       {
-        dstPosCube.setX(max_x);
+        dstPosCube.setX(maxX);
       }
+      // 限制 y 不超出边缘
       if (dstPosCube.y() < 0)
       {
         dstPosCube.setY(0);
       }
-      else if (dstPosCube.y() > max_y)
+      else if (dstPosCube.y() > maxY)
       {
-        dstPosCube.setY(max_y);
+        dstPosCube.setY(maxY);
       }
 
       // 移动到新位置
@@ -129,7 +132,7 @@ bool MouseEventDemo::eventFilter(QObject* watched, QEvent* event)
   {
     if (event->type() == QEvent::Resize)
     {
-      moveToCenter(*m_wgt, *m_lbCube);
+      MoveToCenter(*m_wgt, *m_lbCube);
     }
   }
 

@@ -1,14 +1,13 @@
 #ifndef DEMO01_MOUSE_EVENT_H
 #define DEMO01_MOUSE_EVENT_H
 
-#include "demobase.h"
-
 #include <QEvent>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QWidget>
 #include <cstdint>
 
-class MouseEventDemo : public DemoBase
+class MouseEventDemo : public QWidget
 {
   Q_OBJECT
 public:
@@ -16,11 +15,12 @@ public:
   virtual ~MouseEventDemo();
 
 private:
-  void moveToCenter(const QWidget& parent, QWidget& children);
-  bool eventFilter(QObject* watched, QEvent* event);
+  void MoveToCenter(const QWidget& parent, QWidget& children);
+  virtual bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
   uint32_t m_eventFilterCount;
+  QLabel* m_lbMouseEvent;
   QLabel* m_lbEventFilter;
   QWidget* m_wgt;
   QLabel* m_lbCube;
@@ -38,13 +38,13 @@ public:
   ~MouseEventLabel();
 
 private:
-  void enterEvent(QEnterEvent* event);
-  void leaveEvent(QEvent* event);
+  virtual void enterEvent(QEnterEvent* event) override;
+  virtual void leaveEvent(QEvent* event) override;
 
-  void mousePressEvent(QMouseEvent* event);
-  void mouseReleaseEvent(QMouseEvent* event);
-  void mouseMoveEvent(QMouseEvent* event);
-  void mouseDoubleClickEvent(QMouseEvent* event);
+  virtual void mousePressEvent(QMouseEvent* event) override;
+  virtual void mouseReleaseEvent(QMouseEvent* event) override;
+  virtual void mouseMoveEvent(QMouseEvent* event) override;
+  virtual void mouseDoubleClickEvent(QMouseEvent* event) override;
 
 private:
   uint32_t m_eventCount;

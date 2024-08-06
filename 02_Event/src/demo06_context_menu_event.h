@@ -1,9 +1,9 @@
 #ifndef DEMO06_CONTEXT_MENU_EVENT_H
 #define DEMO06_CONTEXT_MENU_EVENT_H
 
-#include "demobase.h"
+#include <QWidget>
 
-class ContextMenuEventDemo : public DemoBase
+class ContextMenuEventDemo : public QWidget
 {
   Q_OBJECT
 public:

@@ -8,7 +8,6 @@
 
 #include <memory>
 #include "../../../demo06_context_menu_event.h"
-#include <QtGui/qtextcursor.h>
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
@@ -62,7 +61,7 @@ void ContextMenuEventDemo::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
 }
 
 const QMetaObject ContextMenuEventDemo::staticMetaObject = { {
-    QMetaObject::SuperData::link<DemoBase::staticMetaObject>(),
+    QMetaObject::SuperData::link<QWidget::staticMetaObject>(),
     qt_meta_stringdata_ContextMenuEventDemo.offsetsAndSize,
     qt_meta_data_ContextMenuEventDemo,
     qt_static_metacall,
@@ -87,12 +86,12 @@ void *ContextMenuEventDemo::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_ContextMenuEventDemo.stringdata0))
         return static_cast<void*>(this);
-    return DemoBase::qt_metacast(_clname);
+    return QWidget::qt_metacast(_clname);
 }
 
 int ContextMenuEventDemo::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = DemoBase::qt_metacall(_c, _id, _a);
+    _id = QWidget::qt_metacall(_c, _id, _a);
     return _id;
 }
 QT_WARNING_POP

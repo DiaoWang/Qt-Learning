@@ -1,9 +1,9 @@
 #ifndef DEMO03_TIMER_EVENT_H
 #define DEMO03_TIMER_EVENT_H
 
-#include "demobase.h"
+#include <QWidget>
 
-class TimerEventDemo : public DemoBase
+class TimerEventDemo : public QWidget
 {
   Q_OBJECT
 public:

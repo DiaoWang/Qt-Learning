@@ -8,7 +8,6 @@
 
 #include <memory>
 #include "../../../demo03_timer_event.h"
-#include <QtGui/qtextcursor.h>
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
@@ -62,7 +61,7 @@ void TimerEventDemo::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
 }
 
 const QMetaObject TimerEventDemo::staticMetaObject = { {
-    QMetaObject::SuperData::link<DemoBase::staticMetaObject>(),
+    QMetaObject::SuperData::link<QWidget::staticMetaObject>(),
     qt_meta_stringdata_TimerEventDemo.offsetsAndSize,
     qt_meta_data_TimerEventDemo,
     qt_static_metacall,
@@ -87,12 +86,12 @@ void *TimerEventDemo::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_TimerEventDemo.stringdata0))
         return static_cast<void*>(this);
-    return DemoBase::qt_metacast(_clname);
+    return QWidget::qt_metacast(_clname);
 }
 
 int TimerEventDemo::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = DemoBase::qt_metacall(_c, _id, _a);
+    _id = QWidget::qt_metacall(_c, _id, _a);
     return _id;
 }
 QT_WARNING_POP

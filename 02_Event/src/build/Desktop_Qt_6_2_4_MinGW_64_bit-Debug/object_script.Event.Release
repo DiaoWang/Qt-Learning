@@ -6,7 +6,6 @@ release/demo04_drag_event.o
 release/demo05_paint_event.o
 release/demo06_context_menu_event.o
 release/demo07_event_propagate_process.o
-release/demobase.o
 release/main.o
 release/moc_demo00_event.o
 release/moc_demo01_mouse_event.o
@@ -16,4 +15,3 @@ release/moc_demo04_drag_event.o
 release/moc_demo05_paint_event.o
 release/moc_demo06_context_menu_event.o
 release/moc_demo07_event_propagate_process.o
-release/moc_demobase.o

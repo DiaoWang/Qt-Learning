@@ -1,9 +1,9 @@
 #ifndef DEMO04_DRAG_EVENT_H
 #define DEMO04_DRAG_EVENT_H
 
-#include "demobase.h"
+#include <QWidget>
 
-class DragEventDemo : public DemoBase
+class DragEventDemo : public QWidget
 {
   Q_OBJECT
 public:

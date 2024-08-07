@@ -1,4 +1,5 @@
 #include "demo01_mouse_event.h"
+#include "custom_qt_tools.h"
 
 #include <QDebug>
 #include <QPoint>
@@ -50,13 +51,6 @@ MouseEventDemo::~MouseEventDemo()
 {
 }
 
-void MouseEventDemo::MoveToCenter(const QWidget& parent, QWidget& children)
-{
-  int posX = parent.size().width() / 2 - children.size().width() / 2;
-  int posY = parent.size().height() / 2 - children.size().height() / 2;
-  children.move(posX, posY);
-}
-
 bool MouseEventDemo::eventFilter(QObject* watched, QEvent* event)
 {
   if (m_lbEventFilter == watched)
@@ -87,7 +81,7 @@ bool MouseEventDemo::eventFilter(QObject* watched, QEvent* event)
       }
       else if (mouseEvent->button() == Qt::RightButton)
       {
-        MoveToCenter(*m_wgt, *m_lbCube);
+        CustomQtTools::MoveToCenter(*m_wgt, *m_lbCube);
       }
     }
     else if (event->type() == QEvent::MouseMove)
@@ -103,7 +97,7 @@ bool MouseEventDemo::eventFilter(QObject* watched, QEvent* event)
       auto dstPosCube = curPosMouse - m_lastPosMouse + m_lastPosCube;
 
       // 限制移动范围在窗体内部
-      int maxX = m_wgt->width() - m_lbCube->width(); // 计算x坐标最大值
+      int maxX = m_wgt->width() - m_lbCube->width();   // 计算x坐标最大值
       int maxY = m_wgt->height() - m_lbCube->height(); // 计算y坐标最大值
       // 限制 x 不超出边缘
       if (dstPosCube.x() < 0)
@@ -132,7 +126,7 @@ bool MouseEventDemo::eventFilter(QObject* watched, QEvent* event)
   {
     if (event->type() == QEvent::Resize)
     {
-      MoveToCenter(*m_wgt, *m_lbCube);
+      CustomQtTools::MoveToCenter(*m_wgt, *m_lbCube);
     }
   }
 

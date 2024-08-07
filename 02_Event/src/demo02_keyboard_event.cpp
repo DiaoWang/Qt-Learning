@@ -1,4 +1,5 @@
 #include "demo02_keyboard_event.h"
+#include "custom_qt_tools.h"
 
 #include <QDebug>
 
@@ -28,8 +29,8 @@ void KeyboardEventDemo::keyPressEvent(QKeyEvent* event)
 {
   auto dstX = m_lbCube->pos().x();
   auto dstY = m_lbCube->pos().y();
-  const auto MIN_X = 0 - m_lbCube->width() + 1;
-  const auto MIN_Y = 0 - m_lbCube->height() + 1;
+  const auto MIN_X = -m_lbCube->width() + 1;
+  const auto MIN_Y = -m_lbCube->height() + 1;
   const auto MAX_X = width() - 1;
   const auto MAX_Y = height() - 1;
   int step = 10;
@@ -143,4 +144,11 @@ void KeyboardEventDemo::keyReleaseEvent(QKeyEvent* event)
   default:
     break;
   }
+}
+
+void KeyboardEventDemo::resizeEvent(QResizeEvent* event)
+{
+  CustomQtTools::MoveToCenter(*this, *m_lbCube);
+
+  QWidget::resizeEvent(event);
 }

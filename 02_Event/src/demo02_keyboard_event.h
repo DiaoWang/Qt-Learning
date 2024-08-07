@@ -4,7 +4,6 @@
 #include <QKeyEvent>
 #include <QLabel>
 #include <QWidget>
-#include <cstdint>
 
 class KeyboardEventDemo : public QWidget
 {
@@ -17,6 +16,7 @@ public:
 private:
   virtual void keyPressEvent(QKeyEvent* event) override;
   virtual void keyReleaseEvent(QKeyEvent* event) override;
+  virtual void resizeEvent(QResizeEvent* event) override;
 
 private:
   QLabel* m_lbCube;

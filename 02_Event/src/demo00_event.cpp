@@ -79,9 +79,14 @@ void EventDemo::InitNavigationPanel()
                     .arg(navigationNames.at(i)));
     pbtn->setCheckable(true);
     pbtn->setStyleSheet(R"(
-      text-align: left;
-      padding-left: 10px;
-      padding-right: 10px;
+      QPushButton {
+        text-align: left;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      QPushButton:focus {
+        outline: none;
+      }
     )");
     pbtn->setFont(font());
     m_ptrBtnGroup->addButton(pbtn, i);

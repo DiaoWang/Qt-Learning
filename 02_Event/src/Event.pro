@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    custom_qt_tools.cpp \
     demo00_event.cpp \
     demo01_mouse_event.cpp \
     demo02_keyboard_event.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
     main.cpp
 
 HEADERS += \
+    custom_qt_tools.h \
     demo00_event.h \
     demo01_mouse_event.h \
     demo02_keyboard_event.h \

@@ -15,7 +15,6 @@ public:
   virtual ~MouseEventDemo();
 
 private:
-  void MoveToCenter(const QWidget& parent, QWidget& children);
   virtual bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:

@@ -1,7 +1,6 @@
 #ifndef DEMO01_MOUSE_EVENT_H
 #define DEMO01_MOUSE_EVENT_H
 
-#include <QEvent>
 #include <QLabel>
 #include <QMouseEvent>
 #include <QWidget>

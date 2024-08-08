@@ -15,6 +15,7 @@ public:
 
 private:
   void timerEvent(QTimerEvent* event) override;
+  void MoveCube(QWidget* wgt);
 
 private slots:
   void onStartClicked();

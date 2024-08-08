@@ -67,15 +67,20 @@ void TimerEventDemo::timerEvent(QTimerEvent* event)
 {
   if (event->timerId() == m_timerId)
   {
-    auto dstX = m_lbCubeForTimerEvent->x() + 5;
-    if (dstX > width() - 1)
-    {
-      dstX = -m_lbCubeForTimerEvent->width() + 1;
-    }
-    m_lbCubeForTimerEvent->move(dstX, m_lbCubeForTimerEvent->y());
+    MoveCube(m_lbCubeForTimerEvent);
   }
 
   QWidget::timerEvent(event);
+}
+
+void TimerEventDemo::MoveCube(QWidget* wgt)
+{
+  auto dstX = wgt->x() + 5;
+  if (dstX > width() - 1)
+  {
+    dstX = -wgt->width() + 1;
+  }
+  wgt->move(dstX, wgt->y());
 }
 
 void TimerEventDemo::onStartClicked()
@@ -104,10 +109,5 @@ void TimerEventDemo::onResetClicked()
 
 void TimerEventDemo::onTimerTimeout()
 {
-  auto dstX = m_lbCubeForTimerObject->x() + 5;
-  if (dstX > width() - 1)
-  {
-    dstX = -m_lbCubeForTimerObject->width() + 1;
-  }
-  m_lbCubeForTimerObject->move(dstX, m_lbCubeForTimerObject->y());
+  MoveCube(m_lbCubeForTimerObject);
 }

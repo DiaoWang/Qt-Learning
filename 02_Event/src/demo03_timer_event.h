@@ -14,7 +14,7 @@ public:
   virtual ~TimerEventDemo();
 
 private:
-  void timerEvent(QTimerEvent* event) override;
+  virtual void timerEvent(QTimerEvent* event) override;
   void MoveCube(QWidget* wgt);
 
 private slots:

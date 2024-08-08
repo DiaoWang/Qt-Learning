@@ -34,7 +34,7 @@ class MouseEventLabel : public QLabel
   Q_OBJECT
 public:
   MouseEventLabel(QWidget* parent = nullptr);
-  ~MouseEventLabel();
+  virtual ~MouseEventLabel();
 
 private:
   virtual void enterEvent(QEnterEvent* event) override;

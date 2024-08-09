@@ -18,8 +18,6 @@ DragEventDemo::DragEventDemo(QWidget* parent)
 
   vLayout->addWidget(txtEdit);
 
-  setLayout(vLayout);
-
   setAcceptDrops(true);
 }
 

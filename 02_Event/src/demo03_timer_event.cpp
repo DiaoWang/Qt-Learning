@@ -29,7 +29,7 @@ TimerEventDemo::TimerEventDemo(QWidget* parent)
   m_lbCubeForTimerObject->setStyleSheet(
     "background-color: rgb(160, 200, 255);");
 
-  QHBoxLayout* hLayout = new QHBoxLayout(this);
+  QHBoxLayout* hLayout = new QHBoxLayout();
   hLayout->setSpacing(0);
   hLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -47,8 +47,6 @@ TimerEventDemo::TimerEventDemo(QWidget* parent)
   vLayout->addWidget(m_lbCubeForTimerEvent);
   vLayout->addWidget(m_lbCubeForTimerObject);
   vLayout->addLayout(hLayout);
-
-  setLayout(vLayout);
 
   connect(pbtnStart, &QPushButton::clicked, this,
           &TimerEventDemo::onStartClicked);

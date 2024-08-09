@@ -42,9 +42,6 @@ EventDemo::EventDemo(QWidget* parent)
   hLayoutMain->addWidget(m_ptrWgtNavigationPanel);
   hLayoutMain->addWidget(m_ptrWgtOperationPanel);
 
-  // 设置布局
-  setLayout(hLayoutMain);
-
   // 设置默认选中项
   m_ptrBtnGroup->button(0)->click();
 }
@@ -97,9 +94,6 @@ void EventDemo::InitNavigationPanel()
     connect(pbtn, &QPushButton::clicked, this,
             &EventDemo::SwitchOperationPanel);
   }
-
-  // 设置布局
-  m_ptrWgtNavigationPanel->setLayout(vLayoutNavigation);
 }
 
 void EventDemo::InitOperationPanel()
@@ -113,8 +107,6 @@ void EventDemo::InitOperationPanel()
   vLayoutOperation->setContentsMargins(0, 0, 0, 0);
   // 在布局中添加控件
   vLayoutOperation->addWidget(m_ptrStackWgt);
-  // 设置布局
-  m_ptrWgtOperationPanel->setLayout(vLayoutOperation);
 
   m_ptrStackWgt->addWidget(new MouseEventDemo(m_ptrWgtOperationPanel));
   m_ptrStackWgt->addWidget(new KeyboardEventDemo(m_ptrWgtOperationPanel));

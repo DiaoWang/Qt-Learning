@@ -39,8 +39,6 @@ MouseEventDemo::MouseEventDemo(QWidget* parent)
   vLayout->addWidget(m_lbEventFilter);
   vLayout->addWidget(m_wgt);
 
-  setLayout(vLayout);
-
   // 安装事件过滤器，m_lbEventFilter 的所有事件受到 this 监控
   m_lbEventFilter->installEventFilter(this);
   m_lbCube->installEventFilter(this);

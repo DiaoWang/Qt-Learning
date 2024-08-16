@@ -95,12 +95,12 @@ bool EventPropagateLabel::event(QEvent* event)
   }
   else if (mouseEvent->button() == Qt::RightButton)
   { // 返回 false 表示事件未识别，本类不再继续处理，
-    // 事件会传递给父控件，由父控件的 event() 方法进行处理
+    // 事件会传递给【父控件】，由【父控件】的 event() 方法进行处理
     qDebug() << "return false;";
     return false;
   }
 
-  // 调用父类的 event() 方法，将事件继续分发给本类中对应该的事件处理函数
+  // 调用【父类】的 event() 方法，将事件继续分发给本类中对应该的事件处理函数
   qDebug() << "return QLabel::event(event);";
   return QLabel::event(event);
 }

@@ -9,7 +9,9 @@
         "qrandomgenerator64": "cpp",
         "array": "cpp",
         "qdatetime": "cpp",
-        "qdebug": "cpp"
+        "qdebug": "cpp",
+        "qcoreapplication": "cpp",
+        "ostream": "cpp"
     },
     "terminal.integrated.env.windows": {
         "HTTP_PROXY": "127.0.0.1:7890"

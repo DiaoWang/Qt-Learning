@@ -6,6 +6,7 @@
 #include "demo05_paint_event.h"
 #include "demo06_context_menu_event.h"
 #include "demo07_event_propagate_process.h"
+#include "demo08_frameless_window.h"
 
 #include <QChar>
 #include <QHBoxLayout>
@@ -15,10 +16,12 @@
 
 EventDemo::EventDemo(QWidget* parent)
     : QWidget(parent),
-      m_ptrWgtNavigationPanel(new QWidget(this)),
-      m_ptrWgtOperationPanel(new QWidget(this)),
-      m_ptrStackWgt(new QStackedWidget(m_ptrWgtOperationPanel)),
-      m_ptrBtnGroup(new QButtonGroup(this))
+      m_wgtNavigationPanel(new QWidget(this)),
+      m_wgtOperationPanel(new QWidget(this)),
+      m_stackWidget(new QStackedWidget(m_wgtOperationPanel)),
+      m_btnGroup(new QButtonGroup(this)),
+      m_scalingDirection(NON_EDGE),
+      m_disabledHoverEvent(false)
 {
   // 设置尺寸
   resize(600, 300);
@@ -32,18 +35,22 @@ EventDemo::EventDemo(QWidget* parent)
   // 创建布局
   QHBoxLayout* hLayoutMain = new QHBoxLayout(this);
   hLayoutMain->setSpacing(0);
-  hLayoutMain->setContentsMargins(0, 0, 0, 0);
+  hLayoutMain->setContentsMargins(10, 10, 10, 10);
 
   // 初始化导航面板和操作面板
   InitNavigationPanel();
   InitOperationPanel();
 
   // 在布局中添加控件
-  hLayoutMain->addWidget(m_ptrWgtNavigationPanel);
-  hLayoutMain->addWidget(m_ptrWgtOperationPanel);
+  hLayoutMain->addWidget(m_wgtNavigationPanel);
+  hLayoutMain->addWidget(m_wgtOperationPanel);
 
   // 设置默认选中项
-  m_ptrBtnGroup->button(0)->click();
+  m_btnGroup->button(0)->click();
+
+  // 为了能够处理 QEvent::HoverMove 事件，需要开启以下选项
+  setMouseTracking(true);
+  setAttribute(Qt::WA_Hover, true);
 }
 
 EventDemo::~EventDemo()
@@ -59,10 +66,11 @@ void EventDemo::InitNavigationPanel()
                   << "拖动事件"
                   << "绘图事件"
                   << "右键菜单"
-                  << "事件传递流程";
+                  << "事件传递流程"
+                  << "无边框窗口";
 
   // 创建布局
-  QVBoxLayout* vLayoutNavigation = new QVBoxLayout(m_ptrWgtNavigationPanel);
+  QVBoxLayout* vLayoutNavigation = new QVBoxLayout(m_wgtNavigationPanel);
   vLayoutNavigation->setSpacing(0);
   vLayoutNavigation->setContentsMargins(0, 0, 0, 0);
 
@@ -86,7 +94,7 @@ void EventDemo::InitNavigationPanel()
       }
     )");
     pbtn->setFont(font());
-    m_ptrBtnGroup->addButton(pbtn, i);
+    m_btnGroup->addButton(pbtn, i);
     // 在布局中添加控件
     vLayoutNavigation->addWidget(pbtn);
 
@@ -98,27 +106,227 @@ void EventDemo::InitNavigationPanel()
 
 void EventDemo::InitOperationPanel()
 {
-  m_ptrWgtOperationPanel->setMinimumWidth(400);
-  m_ptrWgtOperationPanel->setMinimumHeight(400);
+  m_wgtOperationPanel->setMinimumWidth(400);
+  m_wgtOperationPanel->setMinimumHeight(400);
 
   // 创建布局
-  QVBoxLayout* vLayoutOperation = new QVBoxLayout(m_ptrWgtOperationPanel);
+  QVBoxLayout* vLayoutOperation = new QVBoxLayout(m_wgtOperationPanel);
   vLayoutOperation->setSpacing(0);
   vLayoutOperation->setContentsMargins(0, 0, 0, 0);
   // 在布局中添加控件
-  vLayoutOperation->addWidget(m_ptrStackWgt);
+  vLayoutOperation->addWidget(m_stackWidget);
 
-  m_ptrStackWgt->addWidget(new MouseEventDemo(m_ptrWgtOperationPanel));
-  m_ptrStackWgt->addWidget(new KeyboardEventDemo(m_ptrWgtOperationPanel));
-  m_ptrStackWgt->addWidget(new TimerEventDemo(m_ptrWgtOperationPanel));
-  m_ptrStackWgt->addWidget(new DragEventDemo(m_ptrWgtOperationPanel));
-  m_ptrStackWgt->addWidget(new PaintEventDemo(m_ptrWgtOperationPanel));
-  m_ptrStackWgt->addWidget(new ContextMenuEventDemo(m_ptrWgtOperationPanel));
-  m_ptrStackWgt->addWidget(
-    new EventPropagateProcessDemo(m_ptrWgtOperationPanel));
+  m_stackWidget->addWidget(new MouseEventDemo(m_wgtOperationPanel));
+  m_stackWidget->addWidget(new KeyboardEventDemo(m_wgtOperationPanel));
+  m_stackWidget->addWidget(new TimerEventDemo(m_wgtOperationPanel));
+  m_stackWidget->addWidget(new DragEventDemo(m_wgtOperationPanel));
+  m_stackWidget->addWidget(new PaintEventDemo(m_wgtOperationPanel));
+  m_stackWidget->addWidget(new ContextMenuEventDemo(m_wgtOperationPanel));
+  m_stackWidget->addWidget(new EventPropagateProcessDemo(m_wgtOperationPanel));
+  m_stackWidget->addWidget(new FramelessWindowDemo(m_wgtOperationPanel));
+}
+
+void EventDemo::mousePressEvent(QMouseEvent* event)
+{
+  if (!(windowFlags() & Qt::FramelessWindowHint))
+  { // 有边框时不处理
+    event->ignore();
+    return;
+  }
+
+  if (event->button() == Qt::LeftButton)
+  {
+    m_mouseOffset =
+      event->globalPosition().toPoint() - frameGeometry().topLeft();
+    m_disabledHoverEvent = true;
+
+    // qDebug() << "MousePosition: " << event->globalPosition().toPoint()
+    //          << "topLeft: " << m_wgtToplevelWindow->frameGeometry().topLeft()
+    //          << "mouseOffset: " << m_mouseOffset;
+  }
+
+  event->ignore();
+}
+
+void EventDemo::mouseReleaseEvent(QMouseEvent* event)
+{
+  if (event->button() == Qt::LeftButton)
+  {
+    m_disabledHoverEvent = false;
+  }
+}
+void EventDemo::mouseMoveEvent(QMouseEvent* event)
+{
+  if (!(windowFlags() & Qt::FramelessWindowHint))
+  { // 有边框时不处理
+    event->ignore();
+    return;
+  }
+
+  if (event->buttons() & Qt::LeftButton && m_scalingDirection == NON_EDGE &&
+      !isFullScreen() && !isMaximized())
+  {
+    move(event->globalPosition().toPoint() - m_mouseOffset);
+
+    // qDebug() << "MousePosition: " << event->globalPosition().toPoint()
+    //          << "mouseOffset: " << m_mouseOffset;
+  }
+  else if (event->buttons() & Qt::LeftButton && m_scalingDirection != NON_EDGE)
+  {
+    const auto& rectToplevel = rect();
+    const auto& topLeft = mapToGlobal(rectToplevel.topLeft());
+    const auto& bottomRight = mapToGlobal(rectToplevel.bottomRight());
+    QRect rectDestination(topLeft, bottomRight);
+    const auto& mousePosition = event->globalPosition().toPoint();
+
+    switch (m_scalingDirection)
+    {
+    case TOP: {
+      if (bottomRight.y() - mousePosition.y() > minimumHeight())
+      {
+        rectDestination.setTop(mousePosition.y());
+      }
+    }
+    break;
+    case BOTTOM: {
+      rectDestination.setHeight(mousePosition.y() - topLeft.y());
+    }
+    break;
+    case LEFT: {
+      if (bottomRight.x() - mousePosition.x() > minimumWidth())
+      {
+        rectDestination.setLeft(mousePosition.x());
+      }
+    }
+    break;
+    case RIGHT: {
+      rectDestination.setWidth(mousePosition.x() - topLeft.x());
+    }
+    break;
+    case TOP_LEFT: {
+      if (bottomRight.y() - mousePosition.y() > minimumHeight())
+      {
+        rectDestination.setTop(mousePosition.y());
+      }
+      if (bottomRight.x() - mousePosition.x() > minimumWidth())
+      {
+        rectDestination.setLeft(mousePosition.x());
+      }
+    }
+    break;
+    case TOP_RIGHT: {
+      if (bottomRight.y() - mousePosition.y() > minimumHeight())
+      {
+        rectDestination.setTop(mousePosition.y());
+      }
+      rectDestination.setWidth(mousePosition.x() - topLeft.x());
+    }
+    break;
+    case BOTTOM_LEFT: {
+      rectDestination.setHeight(mousePosition.y() - topLeft.y());
+      if (bottomRight.x() - mousePosition.x() > minimumWidth())
+      {
+        rectDestination.setLeft(mousePosition.x());
+      }
+    }
+    break;
+    case BOTTOM_RIGHT: {
+      rectDestination.setHeight(mousePosition.y() - topLeft.y());
+      rectDestination.setWidth(mousePosition.x() - topLeft.x());
+    }
+    break;
+    default:
+      break;
+    }
+
+    setGeometry(rectDestination);
+  }
+
+  event->ignore();
+}
+
+bool EventDemo::event(QEvent* event)
+{
+  if (!(windowFlags() & Qt::FramelessWindowHint))
+  { // 有边框时不处理
+    return QWidget::event(event);
+  }
+
+  if (event->type() == QEvent::HoverMove && !m_disabledHoverEvent)
+  {
+    auto hoverEvent = static_cast<QHoverEvent*>(event);
+
+    const auto& mousePosition = hoverEvent->globalPosition().toPoint();
+    const auto mousePosX = mousePosition.x();
+    const auto mousePosY = mousePosition.y();
+
+    const auto& rectToplevel = rect();
+    const auto topThreshold = rectToplevel.top() + EDGE_THRESHOLD;
+    const auto bottomThreshold = rectToplevel.bottom() - EDGE_THRESHOLD;
+    const auto leftThreshold = rectToplevel.left() + EDGE_THRESHOLD;
+    const auto rightThreshold = rectToplevel.right() - EDGE_THRESHOLD;
+
+    // qDebug() << "mousePosition" << mousePosition << Qt::endl
+    //          << "mousePosX" << mousePosX << Qt::endl
+    //          << "mousePosY" << mousePosY << Qt::endl
+    //          << "topThreshold" << topThreshold << Qt::endl
+    //          << "bottomThreshold" << bottomThreshold << Qt::endl
+    //          << "leftThreshold" << leftThreshold << Qt::endl
+    //          << "rightThreshold" << rightThreshold << Qt::endl;
+
+    if (mousePosY < topThreshold && mousePosX < leftThreshold)
+    { // 左上
+      setCursor(Qt::SizeFDiagCursor);
+      m_scalingDirection = TOP_LEFT;
+    }
+    else if (mousePosY < topThreshold && mousePosX > rightThreshold)
+    { // 右上
+      setCursor(Qt::SizeBDiagCursor);
+      m_scalingDirection = TOP_RIGHT;
+    }
+    else if (mousePosY > bottomThreshold && mousePosX < leftThreshold)
+    { // 左下
+      setCursor(Qt::SizeBDiagCursor);
+      m_scalingDirection = BOTTOM_LEFT;
+    }
+    else if (mousePosY > bottomThreshold && mousePosX > rightThreshold)
+    { // 右下
+      setCursor(Qt::SizeFDiagCursor);
+      m_scalingDirection = BOTTOM_RIGHT;
+    }
+    else if (mousePosY < topThreshold)
+    { // 上
+      setCursor(Qt::SizeVerCursor);
+      m_scalingDirection = TOP;
+    }
+    else if (mousePosY > bottomThreshold)
+    { // 下
+      setCursor(Qt::SizeVerCursor);
+      m_scalingDirection = BOTTOM;
+    }
+    else if (mousePosX < leftThreshold)
+    { // 左
+      setCursor(Qt::SizeHorCursor);
+      m_scalingDirection = LEFT;
+    }
+    else if (mousePosX > rightThreshold)
+    { // 右
+      setCursor(Qt::SizeHorCursor);
+      m_scalingDirection = RIGHT;
+    }
+    else
+    { // 普通指针
+      setCursor(Qt::ArrowCursor);
+      m_scalingDirection = NON_EDGE;
+    }
+
+    return true;
+  }
+
+  return QWidget::event(event);
 }
 
 void EventDemo::SwitchOperationPanel()
 {
-  m_ptrStackWgt->setCurrentIndex(m_ptrBtnGroup->checkedId());
+  m_stackWidget->setCurrentIndex(m_btnGroup->checkedId());
 }

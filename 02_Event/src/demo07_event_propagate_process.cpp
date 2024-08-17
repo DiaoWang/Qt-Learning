@@ -13,9 +13,24 @@ EventPropagateProcessDemo::EventPropagateProcessDemo(QWidget* parent)
   vLayout->setContentsMargins(0, 0, 0, 0);
 
   m_lbEventPropagate->setStyleSheet(
-    "background-color: rgba(255, 220, 220, 200);");
+    "background-color: rgba(255, 220, 220, 200);"
+    "padding: 10;");
   m_lbEventPropagate->setSizePolicy(QSizePolicy::Expanding,
                                     QSizePolicy::Expanding);
+  m_lbEventPropagate->setWordWrap(true);
+  m_lbEventPropagate->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+  m_lbEventPropagate->setText(
+    "01. EventPropagateProcessDemo::eventFilter()\n"
+    "按住 Shift 键返回 true 停止传递事件，否则返回 false 事件传递至 02\n\n"
+    "02. EventPropagateLabel::event()\n"
+    "单击左键返回 true 停止传递事件，单击右键返回 false 事件传递至 04 "
+    "，单击其他键返回 QLabel::event() 事件传递至 03\n\n"
+    "03. EventPropagateLabel::mousePressEvent()\n"
+    "按住 Ctrl 键返回 true 停止传递事件，否则返回 false 事件传递至 04\n\n"
+    "04. EventPropagateProcessDemo::mousePressEvent()\n"
+    "父控件事件，02 与 03 "
+    "在某些情况下会将事件传递给父控件的特定事件处理方法，mousePressEvent() "
+    "处理鼠标单击按下事件");
 
   vLayout->addWidget(m_lbEventPropagate);
 
@@ -29,7 +44,7 @@ EventPropagateProcessDemo::~EventPropagateProcessDemo()
 void EventPropagateProcessDemo::mousePressEvent(QMouseEvent*)
 {
   qDebug()
-    << "---------- EventPropagateProcessDemo::mousePressEvent ----------";
+    << "---------- 04. EventPropagateProcessDemo::mousePressEvent ----------";
 }
 
 bool EventPropagateProcessDemo::eventFilter(QObject* watched, QEvent* event)
@@ -37,7 +52,8 @@ bool EventPropagateProcessDemo::eventFilter(QObject* watched, QEvent* event)
   if (watched == m_lbEventPropagate &&
       event->type() == QEvent::MouseButtonPress)
   {
-    qDebug() << "---------- EventPropagateProcessDemo::eventFilter ----------";
+    qDebug()
+      << "\n\n---------- 01. EventPropagateProcessDemo::eventFilter ----------";
 
     // 停止事件传递：事件到此结束，不再传递
     // 返回 true
@@ -84,7 +100,7 @@ bool EventPropagateLabel::event(QEvent* event)
     return QLabel::event(event);
   }
 
-  qDebug() << "---------- EventPropagateLabel::event ----------";
+  qDebug() << "---------- 02. EventPropagateLabel::event ----------";
 
   auto mouseEvent = static_cast<QMouseEvent*>(event);
 
@@ -107,7 +123,7 @@ bool EventPropagateLabel::event(QEvent* event)
 
 void EventPropagateLabel::mousePressEvent(QMouseEvent* event)
 {
-  qDebug() << "---------- EventPropagateLabel::mousePressEvent ----------";
+  qDebug() << "---------- 03. EventPropagateLabel::mousePressEvent ----------";
 
   /**
    * 事件处理：完成事件处理后，可以选择接受 (accept) 或忽略事件 (ignore)

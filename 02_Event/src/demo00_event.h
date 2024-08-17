@@ -32,12 +32,13 @@ public:
 private:
   void InitNavigationPanel();
   void InitOperationPanel();
+  void ScaleWindow(QMouseEvent* event);
 
   virtual void mousePressEvent(QMouseEvent* event) override;
   virtual void mouseReleaseEvent(QMouseEvent* event) override;
   virtual void mouseMoveEvent(QMouseEvent* event) override;
   virtual bool event(QEvent* event) override;
-  // virtual bool eventFilter(QObject* watched, QEvent* event) override;
+  virtual bool eventFilter(QObject* watched, QEvent* event) override;
 
 private slots:
   void SwitchOperationPanel();

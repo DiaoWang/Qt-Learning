@@ -1,4 +1,5 @@
 #include "demo00_event.h"
+#include "custom_qt_tools.h"
 #include "demo01_mouse_event.h"
 #include "demo02_keyboard_event.h"
 #include "demo03_timer_event.h"
@@ -23,6 +24,8 @@ EventDemo::EventDemo(QWidget* parent)
       m_scalingDirection(NON_EDGE),
       m_disabledHoverEvent(false)
 {
+  // 设置图标
+  setWindowIcon(CustomQtTools::GetQtIcon());
   // 设置尺寸
   resize(600, 300);
   QFont font;
@@ -35,7 +38,7 @@ EventDemo::EventDemo(QWidget* parent)
   // 创建布局
   QHBoxLayout* hLayoutMain = new QHBoxLayout(this);
   hLayoutMain->setSpacing(0);
-  hLayoutMain->setContentsMargins(10, 10, 10, 10);
+  hLayoutMain->setContentsMargins(0, 0, 0, 0);
 
   // 初始化导航面板和操作面板
   InitNavigationPanel();
@@ -94,6 +97,7 @@ void EventDemo::InitNavigationPanel()
       }
     )");
     pbtn->setFont(font());
+    pbtn->installEventFilter(this);
     m_btnGroup->addButton(pbtn, i);
     // 在布局中添加控件
     vLayoutNavigation->addWidget(pbtn);
@@ -126,6 +130,83 @@ void EventDemo::InitOperationPanel()
   m_stackWidget->addWidget(new FramelessWindowDemo(m_wgtOperationPanel));
 }
 
+void EventDemo::ScaleWindow(QMouseEvent* event)
+{
+  const auto& rectToplevel = rect();
+  const auto& topLeft = mapToGlobal(rectToplevel.topLeft());
+  const auto& bottomRight = mapToGlobal(rectToplevel.bottomRight());
+  QRect rectDestination(topLeft, bottomRight);
+  const auto& mousePosition = event->globalPosition().toPoint();
+
+  switch (m_scalingDirection)
+  {
+  case TOP: {
+    if (bottomRight.y() - mousePosition.y() > minimumHeight())
+    {
+      rectDestination.setTop(mousePosition.y());
+    }
+  }
+  break;
+  case BOTTOM: {
+    rectDestination.setHeight(mousePosition.y() - topLeft.y());
+  }
+  break;
+  case LEFT: {
+    if (bottomRight.x() - mousePosition.x() > minimumWidth())
+    {
+      rectDestination.setLeft(mousePosition.x());
+    }
+  }
+  break;
+  case RIGHT: {
+    rectDestination.setWidth(mousePosition.x() - topLeft.x());
+  }
+  break;
+  case TOP_LEFT: {
+    if (bottomRight.y() - mousePosition.y() > minimumHeight())
+    {
+      rectDestination.setTop(mousePosition.y());
+    }
+    if (bottomRight.x() - mousePosition.x() > minimumWidth())
+    {
+      rectDestination.setLeft(mousePosition.x());
+    }
+  }
+  break;
+  case TOP_RIGHT: {
+    if (bottomRight.y() - mousePosition.y() > minimumHeight())
+    {
+      rectDestination.setTop(mousePosition.y());
+    }
+    rectDestination.setWidth(mousePosition.x() - topLeft.x());
+  }
+  break;
+  case BOTTOM_LEFT: {
+    rectDestination.setHeight(mousePosition.y() - topLeft.y());
+    if (bottomRight.x() - mousePosition.x() > minimumWidth())
+    {
+      rectDestination.setLeft(mousePosition.x());
+    }
+  }
+  break;
+  case BOTTOM_RIGHT: {
+    rectDestination.setHeight(mousePosition.y() - topLeft.y());
+    rectDestination.setWidth(mousePosition.x() - topLeft.x());
+  }
+  break;
+  default:
+    break;
+  }
+
+  // qDebug() << "mousePosition: " << mousePosition << Qt::endl
+  //          << "event: " << event << Qt::endl
+  //          << "topLeft: " << topLeft << Qt::endl
+  //          << "bottomRight: " << bottomRight << Qt::endl
+  //          << "rectDestination" << rectDestination << Qt::endl;
+
+  setGeometry(rectDestination);
+}
+
 void EventDemo::mousePressEvent(QMouseEvent* event)
 {
   if (!(windowFlags() & Qt::FramelessWindowHint))
@@ -155,6 +236,7 @@ void EventDemo::mouseReleaseEvent(QMouseEvent* event)
     m_disabledHoverEvent = false;
   }
 }
+
 void EventDemo::mouseMoveEvent(QMouseEvent* event)
 {
   if (!(windowFlags() & Qt::FramelessWindowHint))
@@ -173,73 +255,7 @@ void EventDemo::mouseMoveEvent(QMouseEvent* event)
   }
   else if (event->buttons() & Qt::LeftButton && m_scalingDirection != NON_EDGE)
   {
-    const auto& rectToplevel = rect();
-    const auto& topLeft = mapToGlobal(rectToplevel.topLeft());
-    const auto& bottomRight = mapToGlobal(rectToplevel.bottomRight());
-    QRect rectDestination(topLeft, bottomRight);
-    const auto& mousePosition = event->globalPosition().toPoint();
-
-    switch (m_scalingDirection)
-    {
-    case TOP: {
-      if (bottomRight.y() - mousePosition.y() > minimumHeight())
-      {
-        rectDestination.setTop(mousePosition.y());
-      }
-    }
-    break;
-    case BOTTOM: {
-      rectDestination.setHeight(mousePosition.y() - topLeft.y());
-    }
-    break;
-    case LEFT: {
-      if (bottomRight.x() - mousePosition.x() > minimumWidth())
-      {
-        rectDestination.setLeft(mousePosition.x());
-      }
-    }
-    break;
-    case RIGHT: {
-      rectDestination.setWidth(mousePosition.x() - topLeft.x());
-    }
-    break;
-    case TOP_LEFT: {
-      if (bottomRight.y() - mousePosition.y() > minimumHeight())
-      {
-        rectDestination.setTop(mousePosition.y());
-      }
-      if (bottomRight.x() - mousePosition.x() > minimumWidth())
-      {
-        rectDestination.setLeft(mousePosition.x());
-      }
-    }
-    break;
-    case TOP_RIGHT: {
-      if (bottomRight.y() - mousePosition.y() > minimumHeight())
-      {
-        rectDestination.setTop(mousePosition.y());
-      }
-      rectDestination.setWidth(mousePosition.x() - topLeft.x());
-    }
-    break;
-    case BOTTOM_LEFT: {
-      rectDestination.setHeight(mousePosition.y() - topLeft.y());
-      if (bottomRight.x() - mousePosition.x() > minimumWidth())
-      {
-        rectDestination.setLeft(mousePosition.x());
-      }
-    }
-    break;
-    case BOTTOM_RIGHT: {
-      rectDestination.setHeight(mousePosition.y() - topLeft.y());
-      rectDestination.setWidth(mousePosition.x() - topLeft.x());
-    }
-    break;
-    default:
-      break;
-    }
-
-    setGeometry(rectDestination);
+    ScaleWindow(event);
   }
 
   event->ignore();
@@ -324,6 +340,60 @@ bool EventDemo::event(QEvent* event)
   }
 
   return QWidget::event(event);
+}
+
+bool EventDemo::eventFilter(QObject* watched, QEvent* event)
+{ // 在覆盖边缘的子控件上安装了事件过滤器，先于子控件获得事件来处理
+  if (!(windowFlags() & Qt::FramelessWindowHint))
+  { // 有边框时不处理
+    return QWidget::eventFilter(watched, event);
+  }
+
+  if (event->type() == QEvent::MouseButtonPress)
+  {
+    auto mouseEvent = static_cast<QMouseEvent*>(event);
+    mousePressEvent(mouseEvent);
+
+    const auto& mousePosition = mouseEvent->scenePosition();
+    const auto mousePosX = mousePosition.x();
+    const auto mousePosY = mousePosition.y();
+
+    const auto& rectToplevel = rect();
+    const auto topThreshold = rectToplevel.top() + EDGE_THRESHOLD;
+    const auto bottomThreshold = rectToplevel.bottom() - EDGE_THRESHOLD;
+    const auto leftThreshold = rectToplevel.left() + EDGE_THRESHOLD;
+    const auto rightThreshold = rectToplevel.right() - EDGE_THRESHOLD;
+
+    if (mousePosY < topThreshold || mousePosY > bottomThreshold ||
+        mousePosX < leftThreshold || mousePosX > rightThreshold)
+    {
+      // qDebug() << "mouseEvent: " << mouseEvent << Qt::endl
+      //          << "mousePosition: " << mousePosition << Qt::endl
+      //          << "mousePosX: " << mousePosX << Qt::endl
+      //          << "mousePosY: " << mousePosY << Qt::endl
+      //          << "topThreshold: " << topThreshold << Qt::endl
+      //          << "bottomThreshold: " << bottomThreshold << Qt::endl
+      //          << "leftThreshold: " << leftThreshold << Qt::endl
+      //          << "rightThreshold: " << rightThreshold << Qt::endl;
+      return true;
+    }
+  }
+  else if (event->type() == QEvent::MouseMove)
+  {
+    auto mouseEvent = static_cast<QMouseEvent*>(event);
+    if (mouseEvent->buttons() & Qt::LeftButton &&
+        m_scalingDirection != NON_EDGE)
+    {
+      ScaleWindow(mouseEvent);
+    }
+  }
+  else if (event->type() == QEvent::MouseButtonRelease)
+  {
+    auto mouseEvent = static_cast<QMouseEvent*>(event);
+    mouseReleaseEvent(mouseEvent);
+  }
+
+  return QWidget::eventFilter(watched, event);
 }
 
 void EventDemo::SwitchOperationPanel()

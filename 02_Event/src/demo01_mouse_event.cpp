@@ -64,6 +64,10 @@ bool MouseEventDemo::eventFilter(QObject* watched, QEvent* event)
       m_lbEventFilter->setText(QString("QWidget::eventFilter::QEvent::Leave %1")
                                  .arg(++m_eventFilterCount));
     }
+    else if (event->type() == QEvent::MouseMove)
+    {
+      return true;
+    }
   }
   else if (m_lbCube == watched)
   {
@@ -234,7 +238,7 @@ void MouseEventLabel::mouseMoveEvent(QMouseEvent* event)
 
   setText(QString("QWidget::mouseMoveEvent\n%1").arg(strArg));
 
-  QWidget::mouseMoveEvent(event);
+  event->accept();
 }
 
 void MouseEventLabel::mouseDoubleClickEvent(QMouseEvent* event)

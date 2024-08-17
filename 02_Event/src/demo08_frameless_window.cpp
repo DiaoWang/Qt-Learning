@@ -3,7 +3,6 @@
 #include <QCursor>
 #include <QDebug>
 #include <QHBoxLayout>
-#include <QSpacerItem>
 #include <QVBoxLayout>
 
 FramelessWindowDemo::FramelessWindowDemo(QWidget* parent)
@@ -22,10 +21,8 @@ FramelessWindowDemo::FramelessWindowDemo(QWidget* parent)
   vLayout->setSpacing(0);
   vLayout->setContentsMargins(0, 0, 0, 0);
 
-  QSpacerItem* hSpacer =
-    new QSpacerItem(100, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-  hLayout->addSpacerItem(hSpacer);
+  // 添加一个弹性空间 (Spacer) 将布局分为左右两半
+  hLayout->addStretch();
   hLayout->addLayout(vLayout);
 
   InitPushButtons();
@@ -109,6 +106,12 @@ void FramelessWindowDemo::InitPushButtons()
   { // windowType() 为 Qt::Window 表示顶层窗口
     m_wgtToplevelWindow = m_wgtToplevelWindow->parentWidget();
   }
+
+  m_pbtnFrameless->installEventFilter(m_wgtToplevelWindow);
+  m_pbtnShowMinimized->installEventFilter(m_wgtToplevelWindow);
+  m_pbtnShowMaximized->installEventFilter(m_wgtToplevelWindow);
+  m_pbtnShowFullScreen->installEventFilter(m_wgtToplevelWindow);
+  m_pbtnCloseWindow->installEventFilter(m_wgtToplevelWindow);
 
   connect(m_pbtnFrameless, &QPushButton::clicked, this, [&]() {
     if (m_wgtToplevelWindow->windowFlags() & Qt::FramelessWindowHint)

@@ -18,6 +18,7 @@ SOURCES += \
     demo05_paint_event.cpp \
     demo06_context_menu_event.cpp \
     demo07_event_propagate_process.cpp \
+    demo08_frameless_window.cpp \
     main.cpp
 
 HEADERS += \
@@ -29,7 +30,8 @@ HEADERS += \
     demo04_drag_event.h \
     demo05_paint_event.h \
     demo06_context_menu_event.h \
-    demo07_event_propagate_process.h
+    demo07_event_propagate_process.h \
+    demo08_frameless_window.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

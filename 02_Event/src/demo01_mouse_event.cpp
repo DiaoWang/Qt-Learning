@@ -118,6 +118,8 @@ bool MouseEventDemo::eventFilter(QObject* watched, QEvent* event)
 
       // 移动到新位置
       m_lbCube->move(dstPosCube.toPoint());
+
+      return true;
     }
   }
   else if (m_wgt == watched)

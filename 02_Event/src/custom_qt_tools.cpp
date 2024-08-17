@@ -8,6 +8,12 @@ CustomQtTools::~CustomQtTools()
 {
 }
 
+const QIcon& CustomQtTools::GetQtIcon()
+{
+  static QIcon iconQt(":/icon/qt_256.ico");
+  return iconQt;
+}
+
 void CustomQtTools::MoveToCenter(const QWidget& parent, QWidget& children)
 {
   int posX = parent.size().width() / 2 - children.size().width() / 2;

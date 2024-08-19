@@ -20,6 +20,7 @@ EventPropagateProcessDemo::EventPropagateProcessDemo(QWidget* parent)
   m_lbEventPropagate->setWordWrap(true);
   m_lbEventPropagate->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
   m_lbEventPropagate->setText(
+    "在有边框窗口下运行此Demo\n\n"
     "01. EventPropagateProcessDemo::eventFilter()\n"
     "按住 Shift 键返回 true 停止传递事件，否则返回 false 事件传递至 02\n\n"
     "02. EventPropagateLabel::event()\n"
@@ -34,7 +35,14 @@ EventPropagateProcessDemo::EventPropagateProcessDemo(QWidget* parent)
 
   vLayout->addWidget(m_lbEventPropagate);
 
+  auto toplevelWindow = parentWidget();
+  while (toplevelWindow->windowType() != Qt::Window)
+  { // windowType() 为 Qt::Window 表示顶层窗口
+    toplevelWindow = toplevelWindow->parentWidget();
+  }
+
   m_lbEventPropagate->installEventFilter(this);
+  m_lbEventPropagate->installEventFilter(toplevelWindow);
 }
 
 EventPropagateProcessDemo::~EventPropagateProcessDemo()

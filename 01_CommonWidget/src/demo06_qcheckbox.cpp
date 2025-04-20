@@ -11,15 +11,15 @@ QCheckBoxDemo::QCheckBoxDemo(const uint8_t demoType, QWidget* parent)
 
   setFixedSize(350, 200);
 
-  connect(ui->ckbox_Apple, &QCheckBox::stateChanged, this,
+  connect(ui->ckbox_Apple, &QCheckBox::checkStateChanged, this,
           &QCheckBoxDemo::onCheckBoxChanged);
-  connect(ui->ckbox_Pear, &QCheckBox::stateChanged, this,
+  connect(ui->ckbox_Pear, &QCheckBox::checkStateChanged, this,
           &QCheckBoxDemo::onCheckBoxChanged);
-  connect(ui->ckbox_Peach, &QCheckBox::stateChanged, this,
+  connect(ui->ckbox_Peach, &QCheckBox::checkStateChanged, this,
           &QCheckBoxDemo::onCheckBoxChanged);
-  connect(ui->ckbox_Orange, &QCheckBox::stateChanged, this,
+  connect(ui->ckbox_Orange, &QCheckBox::checkStateChanged, this,
           &QCheckBoxDemo::onCheckBoxChanged);
-  connect(ui->ckbox_Banana, &QCheckBox::stateChanged, this,
+  connect(ui->ckbox_Banana, &QCheckBox::checkStateChanged, this,
           &QCheckBoxDemo::onCheckBoxChanged);
 }
 

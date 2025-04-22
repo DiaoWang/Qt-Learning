@@ -84,7 +84,7 @@ void QTableWidgetDemo::AddOneRow(const QString& name, const QString& sex,
     ui->tbwgt_Info->setRowCount(row + 1);
   }
   // setItem 方法会取得 Item 对象的所有权，在 TableWidget 销毁时一并销毁 Item
-  // ， 所以不必手动释放
+  // ，所以不必手动释放
   ui->tbwgt_Info->setItem(row, 0, ptrItemName);
   ui->tbwgt_Info->setItem(row, 1, ptrItemSex);
   ui->tbwgt_Info->setItem(row, 2, ptrItemAge);
